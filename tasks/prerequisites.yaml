@@ -1,5 +1,0 @@
----
-  - name: Check if Ansible version is 2.4+
-    debug:
-      msg: "Check if Ansible version is 2.4+"
-    failed_when: not ansible_version.full is version('2.4', '>=')
