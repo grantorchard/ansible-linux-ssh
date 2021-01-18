@@ -1,0 +1,23 @@
+---
+
+- name: Disable password based SSH login
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^PasswordAuthentication'
+    line: 'PasswordAuthentication no'
+
+- name: Update sshd config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: '{{ item.name }} {{ item.value }}'
+    state: present
+    create: yes
+  with_items:
+    - { name: 'TrustedUserCAKeys' , value: '/etc/ssh/ansible-ca.pem' }
+    - { name: 'AuthorizedKeysFile' , value: '/dev/null' }
+
+- name: Download SSH public key from Vault
+  get_url:
+    url: '{{ vault_addr }}/v1/ssh-ca/public_key'
+    dest: /etc/ssh/ansible-ca.pem
+    mode: 644

@@ -1,0 +1,7 @@
+---
+# tasks file for ansible-linux-ssh
+
+- include: prerequisites.yaml
+
+- include: initial_setup.yml
+  when: initial_setup
